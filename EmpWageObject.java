@@ -9,6 +9,7 @@ public class EmpWageObject
 	public final int numbOfWorkingDays;
 	public final int maxHours;
 
+
 	public EmpWageObject(String company,int empRatePerHour,int numbOfWorkingDays,int maxHours)
 	{
 		this.company=company;
