@@ -29,6 +29,37 @@ class CompanyEmpWage {
       return "Total Employee Wage for Company:" +company+" is: "+ totalEmpWage;
    }
 }
+import java.util.*;
+
+interface IComputeEmpWage{
+	public void addCompanyEmpWage( String company, int empRatePerHours, int numOfWorkingDays, int maxHoursPerMonth );
+	public void computeEmpWage();
+}
+
+class CompanyEmpWage {
+
+   public final String company;
+   public final int empRatePerHours;
+   public final int numOfWorkingDays;
+   public final int maxHoursPerMonth;
+   public int totalEmpWage;
+
+   public CompanyEmpWage(String company, int empRatePerHours, int numOfWorkingDays, int maxHoursPerMonth) {
+      this.company = company;
+      this.empRatePerHours = empRatePerHours;
+      this.numOfWorkingDays = numOfWorkingDays;
+      this.maxHoursPerMonth = maxHoursPerMonth;
+   }
+
+	public void setTotalEmpWage(int totalEmpWage) {
+		this.totalEmpWage = totalEmpWage;
+	}
+
+	@Override
+   public String toString() {
+      return "Total Employee Wage for Company:" +company+" is: "+ totalEmpWage;
+   }
+}
 
 public class EmpWageBuilderArray implements IComputeEmpWage {
 	//Constans
@@ -38,9 +69,11 @@ public class EmpWageBuilderArray implements IComputeEmpWage {
 
 	private int numOfCompany = 0;
 	private ArrayList<CompanyEmpWage> companyEmpWageArrayList;
+	private ArrayList<Integer> dailyWageList;
 
 	public EmpWageBuilderArray() {
 		companyEmpWageArrayList = new ArrayList<>();
+		dailyWageList = new ArrayList<>();
 	}
 
 	public void addCompanyEmpWage(String company, int empRatePerHours, int numOfWorkingDays, int maxHoursPerMonth) {
@@ -50,6 +83,14 @@ public class EmpWageBuilderArray implements IComputeEmpWage {
 
 	public void computeEmpWage() {
 		for (int i = 0; i < companyEmpWageArrayList.size(); i++){
+			CompanyEmpWage companyEmpWage = companyEmpWageArrayList.get(i);
+			companyEmpWage.setTotalEmpWage(this.computeEmpWage(companyEmpWage));
+			System.out.println(companyEmpWage);
+		}
+	}
+
+	public void computeDailyWage() {
+		for (int i = 0; i < companyEmpWageArrayList.size(); i++) {
 			CompanyEmpWage companyEmpWage = companyEmpWageArrayList.get(i);
 			companyEmpWage.setTotalEmpWage(this.computeEmpWage(companyEmpWage));
 			System.out.println(companyEmpWage);
@@ -75,7 +116,7 @@ public class EmpWageBuilderArray implements IComputeEmpWage {
                empHrs = 0;
          }
          totalEmpHrs += empHrs;
-         System.out.println("Day#: " + totalWorkingDays + "Employee Hours: " + empHrs);
+         System.out.println("Day: " + totalWorkingDays + "Employee Hours: " + empHrs);
       }
       return totalEmpHrs * companyEmpWage.empRatePerHours;
    }
